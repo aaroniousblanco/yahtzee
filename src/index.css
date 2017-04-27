@@ -1,0 +1,127 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: black;
+}
+
+#root {
+  margin-top: 35px;
+  text-align: center;
+}
+
+#root .dice img {
+  margin-left: 25px;
+  border-radius: 10px;
+  background-color: white;
+  width: 100px;
+}
+
+.game-play {
+  background-color: #EAF27A;
+  padding: 10px 0 10px 10px;
+  margin: 0 150px 0 150px;
+  border-radius: 50px;
+}
+
+.roll {
+  border: none;
+  background-color: red;
+  border-radius: 30px;
+  padding: 10px 40px 10px 40px;
+  margin: 20px 0 20px 0;
+}
+
+.roll:hover {
+  background-color: darkred;
+}
+
+.top-scoreboard {
+  border-radius: 20px;
+  padding: 15px 0 15px 0;
+}
+
+.top-scoreboard img {
+  width: 65px;
+  border-radius: 10px;
+  background-color: silver;
+  margin-left: 25px;
+}
+
+.bottom-scoreboard {
+  border-radius: 20px;
+  margin: 0 40px 10px 0px;
+  height: 100px;
+}
+
+.three-of-a-kind, .four-of-a-kind, .full-house, .chance, .small-straight, .large-straight {
+  border: 2px solid black;
+  border-radius: 20px;
+  display: inline-block;
+  padding-top: 25px;
+  margin-left: 20px;
+  height: 80px;
+  width: 80px;
+  font-size: 8px;
+  font-weight: bolder;
+  background-color: silver;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.yahtzee {
+  border: 2px solid black;
+  border-radius: 20px;
+  display: inline-block;
+  padding: 20px 60px 30px 10px;
+  margin-left: 20px;
+  height: 40px;
+  width: 80px;
+  font-size: 8px;
+  font-weight: bolder;
+  background-color: silver;
+  font-family: 'Press Start 2P', cursive;
+}
+
+h4 {
+  color: orange;
+  display: inline-block;
+  margin-right: 10px;
+}
+.header {
+  font-size: 80px;
+  background-color: red;
+  margin: 0 100px 30px 100px;
+  border-radius: 30px 30px 0 0;
+  font-family: 'Righteous', cursive;
+  color: white;
+}
+
+.dice {
+  display: inline-block;
+  text-align: center;
+}
+
+.hold {
+  padding: 10px;
+  margin-top: 10%;
+  border-radius: 100px;
+  background-color: red;
+  margin-left: 25%;
+  font-size: 12px;
+}
+
+.roll-value {
+  display: inline-block;
+  margin-left: 50px;
+  font-family: 'Press Start 2P', cursive;
+  text-align: left;
+  font-size: 12px;
+}
+
+.roll-value-actual {
+  display: inline-block;
+  margin-left: 25px;
+  font-family: 'Press Start 2P', cursive;
+  text-align: left;
+  font-size: 25px;
+}
