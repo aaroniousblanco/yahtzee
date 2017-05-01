@@ -18,17 +18,27 @@ class Dice extends React.Component {
       die1: 1, die2: 2, die3: 3, die4: 4, die5: 6, die6: 5,
       spinCount: 0,
       rolls: 0,
-      held: []
+      held: [false, false, false, false, false, false]
     };
   }
-  roll = () => {
+
+  roll = (held) => {
+    // console.log(typeof held[0]);
+    //   var testing_array = held.map((held_array_bool) => { //got to fix this
+    //     if (held_array_bool === false) {
+    //       return "false";
+    //     }
+    //     else {
+    //       return "true";
+    //     }
+    //   }); //need to pull out the held dice here to set their state differently below
       this.setState({
-        die1: Math.ceil(Math.random(1, 6) * 6),
-        die2: Math.ceil(Math.random(1, 6) * 6),
-        die3: Math.ceil(Math.random(1, 6) * 6),
-        die4: Math.ceil(Math.random(1, 6) * 6),
-        die5: Math.ceil(Math.random(1, 6) * 6),
-        die6: Math.ceil(Math.random(1, 6) * 6),
+        die1: Math.ceil(Math.random() * 6),
+        die2: Math.ceil(Math.random() * 6),
+        die3: Math.ceil(Math.random() * 6),
+        die4: Math.ceil(Math.random() * 6),
+        die5: Math.ceil(Math.random() * 6),
+        die6: Math.ceil(Math.random() * 6),
         spinCount: this.state.spinCount + 1
       })
       if (this.state.spinCount <= 10) {
@@ -40,19 +50,30 @@ class Dice extends React.Component {
         this.setState({
           spinCount: 0,
           rolls: this.state.rolls + 1
-        })
+        });
       }
   }
 
   hold = (dieValue, index) => {
     let newHeld = this.state.held.slice();
-    newHeld.push(index);
+    newHeld[index - 1] = true;
     this.setState({
       held: newHeld
     });
   }
 
   render() {
+    // var test;
+    // this.state.held.map(function(item, index) {
+    //   if (item === false) {
+    //     test = ("/images/dice" + this.state.die1 + ".png"); //having issues with this
+    //     return;
+    //   }
+    //   // else if (item === false) {
+    //   //   test = ("/images/dice" + this.state.die1 + ".png");
+    //   //   return;
+    //   // }
+    // });
     return (
       <div>
         <div className="header">
@@ -102,7 +123,7 @@ class Dice extends React.Component {
           </div>
         </div>
         <div>
-          <button className="roll btn btn-primary btn-lg" onClick={() => this.roll()}>Roll</button>
+          <button disabled={this.state.rolls === 3} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
         </div>
       </div>
     );
