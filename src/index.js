@@ -21,6 +21,7 @@ class Dice extends React.Component {
       held: [false, false, false, false, false],
       roll_value: 0,
       user_score: 0,
+      scoring_combo_selected: false,
       score_entered: false,
       ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
       three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
@@ -164,15 +165,17 @@ class Dice extends React.Component {
       return a + b;
     }, 0);
     this.setState({
-      roll_value: chance_sum
+      roll_value: chance_sum,
+      scoring_combo_selected: 'chance'
     })
   }
-  enterScore = () => {
+  enterScore = (scoring_combo_selected) => {
     this.setState({
       user_score: this.state.user_score + this.state.roll_value,
       roll_value: 0,
       score_entered: true,
-      rolls: 0
+      rolls: 0,
+      held: [false, false, false, false, false]
     })
   }
 
@@ -208,9 +211,13 @@ class Dice extends React.Component {
       }
   }
 
-  hold = (dieValue, index) => { //refactor this to allow for hold toggling
+  hold = (dieValue, index) => {
     let newHeld = this.state.held.slice();
-    newHeld[index - 1] = true;
+    if (newHeld[index - 1] === true) {
+      newHeld[index - 1] = false;
+    } else {
+      newHeld[index - 1] = true;
+    }
     this.setState({
       held: newHeld
     });
@@ -251,27 +258,27 @@ class Dice extends React.Component {
 
           <div className="dice">
             <img src={"/images/dice" + this.state.die1 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die1, 1)}>Hold</button>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die1, 1)}>{this.state.held[0] === true ? "HELD" : "HOLD"}</button>
           </div>
           <div className="dice">
             <img src={"/images/dice" + this.state.die2 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die2, 2)} >Hold</button>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die2, 2)} >{this.state.held[1] === true ? "HELD" : "HOLD"}</button>
           </div>
           <div className="dice">
             <img src={"/images/dice" + this.state.die3 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die3, 3)} >Hold</button>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die3, 3)} >{this.state.held[2] === true ? "HELD" : "HOLD"}</button>
           </div>
           <div className="dice">
             <img src={"/images/dice" + this.state.die4 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die4, 4)}>Hold</button>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die4, 4)}>{this.state.held[3] === true ? "HELD" : "HOLD"}</button>
           </div>
           <div className="dice">
             <img src={"/images/dice" + this.state.die5 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die5, 5)}>Hold</button>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die5, 5)}>{this.state.held[4] === true ? "HELD" : "HOLD"}</button>
           </div>
         </div>
         <div>
-        <button disabled={this.state.rolls === 0 || this.state.score_entered === true} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>Enter Score</button>
+        <button disabled={this.state.rolls === 0 || this.state.score_entered === true} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore(this.state.scoring_combo_selected)}>Enter Score</button>
           <button disabled={this.state.rolls === 3} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
         </div>
       </div>
