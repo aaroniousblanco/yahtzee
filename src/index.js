@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import update from 'immutability-helper'; //for the enterScore function to set a dynamic key for state.scoring_combo_used in the setState function
 
 const diceImages = [
   '/images/dice1.png',
@@ -194,8 +193,14 @@ class Dice extends React.Component {
       scoring_combo_selected: 'chance'
     })
   }
-  enterScore = () => { //need to include something here to keep track of upper level scoring for bonus purposes
+  enterScore = () => {
     if (this.state.scoring_combo_selected !== 'yahtzee') {
+      let upper_score;
+      if (this.state.scoring_combo_selected === 'ones' || this.state.scoring_combo_selected === 'twos' || this.state.scoring_combo_selected === 'threes' || this.state.scoring_combo_selected === 'fours' || this.state.scoring_combo_selected === 'fives' || this.state.scoring_combo_selected === 'sixes') {
+        upper_score = this.state.roll_value;
+      } else {
+        upper_score = 0;
+      }
       var newState = {
         [this.state.scoring_combo_selected]: true,
         user_score: this.state.user_score + this.state.roll_value,
@@ -203,7 +208,8 @@ class Dice extends React.Component {
         score_entered: true,
         rolls: 0,
         held: [false, false, false, false, false],
-        message: ""
+        message: "",
+        top_level_score: this.state.top_level_score + upper_score
       };
       this.setState(newState);
     } else if (this.state.scoring_combo_selected === 'yahtzee') {
@@ -219,6 +225,7 @@ class Dice extends React.Component {
     }
   }
   roll = (held) => {
+    console.log(gameOverChecker()); //testing this function
       var holding_status_array = held.map((held_array_bool, index) => {
         if (held_array_bool === false) {
           return Math.ceil(Math.random() * 6);
@@ -287,6 +294,12 @@ class Dice extends React.Component {
         });
       }
     }
+  }
+  gameOverChecker = () => { //test this
+    let s = this.state;
+    let array = [s.ones, s.twos, s.threes, s.fours, s.fives, s.sixes, s.three_kind, s.four_kind, s.full, s.small, s.large, s.chance, s.yahtzee[0]];
+    let poop = array.every(bool => {bool});
+    return poop;
   }
 
   render() {
