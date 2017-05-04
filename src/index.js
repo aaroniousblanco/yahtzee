@@ -26,12 +26,28 @@ class Dice extends React.Component {
       score_entered: false,
       ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
       three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
-      yahtzee: [false, false, false, false, false, false, false, false, false, false, false, false, false],
+      yahtzee: 0,
+      bonus: 0,
+      top_level_score: 0,
       message: ""
     };
   }
 
   upperSectionScoringChecker = (die_numeric_value, array) => {
+    let upper_selected;
+    if (die_numeric_value === 1) {
+      upper_selected = 'ones';
+    } else if (die_numeric_value === 2) {
+      upper_selected = 'twos';
+    } else if (die_numeric_value === 3) {
+      upper_selected = 'threes';
+    } else if (die_numeric_value === 4) {
+      upper_selected = 'fours';
+    } else if (die_numeric_value === 5) {
+      upper_selected = 'fives';
+    } else if (die_numeric_value === 6) {
+      upper_selected = 'sixes';
+    }
     let sorted_array = array.sort((a, b) => {
       return a - b;
     });
@@ -39,7 +55,8 @@ class Dice extends React.Component {
       number === die_numeric_value
     );
     this.setState({
-      roll_value: filtered_array.length * die_numeric_value
+      roll_value: filtered_array.length * die_numeric_value,
+      scoring_combo_selected: upper_selected
     })
   }
   threeOfAKindScoringChecker = (array) => {
@@ -157,14 +174,15 @@ class Dice extends React.Component {
     let sorted_array = array.sort((a, b) => {
       return a - b;
     });
-    if (sorted_array[0] === sorted_array[4] && this.state.yahtzee[0] === false) {
+    if (sorted_array[0] === sorted_array[4] && this.state.yahtzee === 0) {
       roll_value = 50;
     }
     else {
       roll_value = 150;
     }
     this.setState({
-      roll_value: roll_value
+      roll_value: roll_value,
+      scoring_combo_selected: 'yahtzee'
     });
   }
   chanceScoringChecker = (array) => {
@@ -176,7 +194,8 @@ class Dice extends React.Component {
       scoring_combo_selected: 'chance'
     })
   }
-  enterScore = () => {
+  enterScore = () => { //need to include something here to keep track of upper level scoring for bonus purposes
+    if (this.state.scoring_combo_selected !== 'yahtzee') {
       var newState = {
         [this.state.scoring_combo_selected]: true,
         user_score: this.state.user_score + this.state.roll_value,
@@ -187,6 +206,17 @@ class Dice extends React.Component {
         message: ""
       };
       this.setState(newState);
+    } else if (this.state.scoring_combo_selected === 'yahtzee') {
+      this.setState({
+        user_score: this.state.user_score + this.state.roll_value,
+        yahtzee: this.state.yahtzee + 1,
+        roll_value: 0,
+        score_entered: true,
+        rolls: 0,
+        held: [false, false, false, false, false],
+        message: ""
+      });
+    }
   }
   roll = (held) => {
       var holding_status_array = held.map((held_array_bool, index) => {
@@ -248,6 +278,16 @@ class Dice extends React.Component {
       message: ""
     });
   }
+  bonusChecker = () => { //call this at the end of the game
+    if (this.state.ones && this.state.twos && this.state.threes && this.state.fours && this.state.fives && this.state.sixes) {
+      if (this.state.top_level_score >= 63) {
+        this.setState({
+          bonus: 35,
+          user_score: this.state.user_score + 35
+        });
+      }
+    }
+  }
 
   render() {
     var scoring_array = [this.state.die1, this.state.die2, this.state.die3, this.state.die4, this.state.die5];
@@ -259,12 +299,12 @@ class Dice extends React.Component {
         </div>
         <div className="game-play">
           <div className="top-scoreboard">
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.threes} src={this.props.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
+            <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
             <div className="roll-value">ROLL<br/>VALUE</div>
             <div className="roll-value-actual">{this.state.roll_value === 0 ? "00" : this.state.roll_value < 10 ? "0" + this.state.roll_value : this.state.roll_value}</div>
           </div>
