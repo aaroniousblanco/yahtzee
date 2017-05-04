@@ -24,19 +24,6 @@ body {
   border-radius: 50px;
 }
 
-.roll {
-  border: none;
-  background-color: red;
-  border-radius: 30px;
-  padding: 10px 40px 10px 40px;
-  margin: 20px 20px 20px 20px;
-  font-family: 'Righteous', cursive;
-}
-
-.roll:hover {
-  background-color: darkred;
-}
-
 .top-scoreboard {
   border-radius: 20px;
   padding: 15px 0 15px 0;
@@ -162,10 +149,33 @@ button.enter {
   background-color: red;
   border-radius: 30px;
   padding: 10px 10px 10px 10px;
-  margin: 20px 20px 20px 70px;
+  margin: 20px 10px 20px 10px;
   font-family: 'Righteous', cursive;
 }
 
  button.enter:hover {
+  background-color: darkred;
+}
+
+.roll {
+  border: none;
+  background-color: red;
+  border-radius: 30px;
+  padding: 10px 40px 10px 40px;
+  margin: 20px 60px 20px 0px;
+  font-family: 'Righteous', cursive;
+}
+
+.new-game {
+  border: none;
+  background-color: red;
+  border-radius: 30px;
+  padding: 6px 10px 6px 10px;
+  margin: 20px 0px 20px 20px;
+  font-family: 'Righteous', cursive;
+  font-size: 12px;
+}
+
+.roll:hover, .new-game:hover {
   background-color: darkred;
 }
