@@ -3,15 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import classnames from 'classnames';
 
-const diceImages = [
-  '/images/dice1.png',
-  '/images/dice2.png',
-  '/images/dice3.png',
-  '/images/dice4.png',
-  '/images/dice5.png',
-  '/images/dice6.png'
-];
-
 class Dice extends React.Component {
   constructor() {
     super();
@@ -34,7 +25,15 @@ class Dice extends React.Component {
       game_over_message: "",
       top_level_bonus_message: "",
       sub_total_toggle: true,
-      high_score: 0
+      high_score: 0,
+      diceImages: [
+        '/images/dice1.png',
+        '/images/dice2.png',
+        '/images/dice3.png',
+        '/images/dice4.png',
+        '/images/dice5.png',
+        '/images/dice6.png'
+      ]
     };
   }
 
@@ -263,7 +262,6 @@ class Dice extends React.Component {
         }
     }
   }
-
   gameOverChecker = () => { //returns true if all scoring combos and at least one yahtzee has been selected by the player
     let high_score;
     if (this.state.user_score > this.state.high_score) {
@@ -383,27 +381,27 @@ class Dice extends React.Component {
         <div className="game-play">
           <div className="top-scoreboard">
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
-                {this.state.ones ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>} 
+                <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.state.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
+                {this.state.ones ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.state.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
                 {this.state.twos ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.threes} src={this.props.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.threes} src={this.state.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
                 {this.state.threes ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.state.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
                 {this.state.fours ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.state.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
                 {this.state.fives ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div>
-                <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.state.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
                 {this.state.sixes ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
             </div>
             <div className={classnames("sub_total_toggle_false", {'sub_total_toggle' : this.state.sub_total_toggle})}>
@@ -553,6 +551,6 @@ class Dice extends React.Component {
 }
 
 ReactDOM.render(
-  <Dice diceImages={diceImages}/>,
+  <Dice />,
   document.getElementById('root')
 );
