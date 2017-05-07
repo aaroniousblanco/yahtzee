@@ -15,6 +15,7 @@ body {
   border-radius: 10px;
   background-color: white;
   width: 120px;
+  margin-top: 20px;
 }
 
 .game-play {
@@ -143,6 +144,36 @@ h4 {
 
 .arrow {
   width: 20px;
+  display: block;
+  margin-left: 24px;
+  margin-bottom: -10px;
+  margin-top: -3px;
+}
+.arrow-hidden {
+    width: 20px;
+    display: block;
+    margin-left: 24px;
+    margin-bottom: -10px;
+    margin-top: -3px;
+}
+.arrow-bottom {
+    width: 20px;
+    display: block;
+    margin-left: 50px;
+    margin-top: 0px;
+    margin-bottom: -5px;
+}
+
+.arrow-bottom-hidden {
+    width: 20px;
+    display: block;
+    margin-left: 50px;
+    margin-top: 0px;
+    margin-bottom: -5px;
+}
+
+.top-scoreboard div {
+    display: inline-block;
 }
 
 button.enter {

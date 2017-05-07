@@ -16,7 +16,7 @@ class Dice extends React.Component {
   constructor() {
     super();
     this.state = {
-      die1: 1, die2: 2, die3: 3, die4: 4, die5: 5,
+      die1: 6, die2: 6, die3: 6, die4: 6, die5: 6,
       spinCount: 0,
       rolls: 0,
       held: [false, false, false, false, false],
@@ -24,8 +24,8 @@ class Dice extends React.Component {
       user_score: 0,
       scoring_combo_selected: false,
       score_entered: false,
-      ones: true, twos: true, threes: true, fours: true, fives: true, sixes: true,
-      three_kind: true, four_kind: true, full: true, small: true, large: true, chance: false,
+      ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
+      three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
       yahtzee_real: 0,
       yahtzee_fake: 0,
       bonus: 0,
@@ -331,7 +331,7 @@ class Dice extends React.Component {
   }
   newGame = () => {
     this.setState({
-      die1: 1, die2: 2, die3: 3, die4: 4, die5: 5,
+      die1: 6, die2: 6, die3: 6, die4: 6, die5: 6,
       spinCount: 0,
       rolls: 0,
       held: [false, false, false, false, false],
@@ -382,58 +382,152 @@ class Dice extends React.Component {
         </div>
         <div className="game-play">
           <div className="top-scoreboard">
-            <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0 || this.state.threes} src={this.props.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
-            <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
-            <div className={classnames("sub_total_toggle_false", {'sub_total_toggle' : this.state.sub_total_toggle})}>SUB<br/>TOTAL</div>
-            <div className={classnames("sub_total_toggle_false_value", {'sub_total_toggle' : this.state.sub_total_toggle, 'roll-value-actual' : this.state.sub_total_toggle,})}>{this.state.top_level_score}</div>
-            <div className="roll-value">ROLL<br/>VALUE</div>
-            <div className="roll-value-actual">{this.state.roll_value === 0 ? "00" : this.state.roll_value < 10 ? "0" + this.state.roll_value : this.state.roll_value}</div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
+                {this.state.ones ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
+                {this.state.twos ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.threes} src={this.props.diceImages[2]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(3, scoring_array)}/>
+                {this.state.threes ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
+                {this.state.fours ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
+                {this.state.fives ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
+                {this.state.sixes ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div className={classnames("sub_total_toggle_false", {'sub_total_toggle' : this.state.sub_total_toggle})}>
+                SUB<br/>TOTAL
+            </div>
+            <div className={classnames("sub_total_toggle_false_value", {'sub_total_toggle' : this.state.sub_total_toggle, 'roll-value-actual' : this.state.sub_total_toggle,})}>
+                {this.state.top_level_score}
+            </div>
+            <div className="roll-value">
+                ROLL<br/>VALUE
+            </div>
+            <div className="roll-value-actual">
+                {this.state.roll_value === 0 ? "00" : this.state.roll_value < 10 ? "0" + this.state.roll_value : this.state.roll_value}
+            </div>
           </div>
           <div className="bottom-scoreboard">
-            <div><button disabled={this.state.rolls === 0 || this.state.three_kind} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.threeOfAKindScoringChecker(scoring_array)}>{this.state.three_kind === true ? "" : "3 KIND"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.four_kind === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fourOfAKindScoringChecker(scoring_array)}>{this.state.four_kind === true ? "" : "4 KIND"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.full === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fullHouseScoringChecker(scoring_array)}>{this.state.full === true ? "" : "FULL"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.small === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.smallStraightScoringChecker(scoring_array)}>{this.state.small === true ? "" : "SMALL"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.large === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.largeStraightScoringChecker(scoring_array)}>{this.state.large === true ? "" : "LARGE"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.chance === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.chanceScoringChecker(scoring_array)}>{this.state.chance === true ? "" : "CHANCE"}</button></div>
-            <div><button disabled={this.state.rolls === 0} type="submit" className="yahtzee btn btn-primary" onClick={() => this.yahtzeeScoringChecker(scoring_array)} >YAHTZEE</button></div>
-            <div className="roll-number">{this.state.game_over_message.length > 0 ? this.state.game_over_message + " " + this.state.top_level_bonus_message + " FINAL SCORE" : this.state.message.length > 0 ? this.state.message : "SCORE"}</div>
-            <div className="roll-number-actual">{this.state.user_score === 0 ? "000" : this.state.user_score}</div>
-            <div className="roll-number">ROLL</div>
-            <div className="roll-number-actual">{this.state.rolls === 0 ? 1 : this.state.rolls <= 2 ? this.state.rolls + 1 : this.state.rolls === 4 ? 3 : ""}</div>
-          </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.three_kind} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.threeOfAKindScoringChecker(scoring_array)}>
+                    3 OF<br/>A KIND
+                </button>
+                {this.state.three_kind ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.four_kind === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fourOfAKindScoringChecker(scoring_array)}>
+                    4 OF<br/>A KIND
+                </button>
+                {this.state.four_kind ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.full === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fullHouseScoringChecker(scoring_array)}>
+                    FULL<br/>HOUSE
+                </button>
+                {this.state.full ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.small === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.smallStraightScoringChecker(scoring_array)}>
+                    SMALL<br/>STRAIGHT
+                </button>
+                {this.state.small ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.large === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.largeStraightScoringChecker(scoring_array)}>
+                    LARGE<br/>STRAIGHT
+                </button>
+                {this.state.large ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0 || this.state.chance === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.chanceScoringChecker(scoring_array)}>
+                    CHANCE
+                </button>
+                {this.state.chance ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div>
+                <button disabled={this.state.rolls === 0} type="submit" className="yahtzee btn btn-primary" onClick={() => this.yahtzeeScoringChecker(scoring_array)} >
+                    YAHTZEE
+                </button>
+                {this.state.yahtzee_fake || this.state.yahtzee_real ? <img className="arrow-bottom" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-bottom-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+            </div>
+            <div className="roll-number">
+                {this.state.game_over_message.length > 0 ? this.state.game_over_message + " " + this.state.top_level_bonus_message + " FINAL SCORE" : this.state.message.length > 0 ? this.state.message : "SCORE"}
+            </div>
+            <div className="roll-number-actual">
+                {this.state.user_score === 0 ? "000" : this.state.user_score}
+            </div>
+            <div className="roll-number">
+                ROLL
+            </div>
+            <div className="roll-number-actual">
+                {this.state.rolls === 0 ? 1 : this.state.rolls <= 2 ? this.state.rolls + 1 : this.state.rolls === 4 ? 3 : ""}
+            </div>
 
-          <div className="dice">
-            <img src={"/images/dice" + this.state.die1 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die1, 1)}>{this.state.held[0] === true ? "HELD" : "HOLD"}</button>
           </div>
           <div className="dice">
-            <img src={"/images/dice" + this.state.die2 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die2, 2)} >{this.state.held[1] === true ? "HELD" : "HOLD"}</button>
+            <img src={"/images/dice" + this.state.die1 + ".png"} alt=""/>
+            <br/>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die1, 1)}>
+                {this.state.held[0] === true ? "HELD" : "HOLD"}
+            </button>
           </div>
           <div className="dice">
-            <img src={"/images/dice" + this.state.die3 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die3, 3)} >{this.state.held[2] === true ? "HELD" : "HOLD"}</button>
+            <img src={"/images/dice" + this.state.die2 + ".png"} alt=""/>
+            <br/>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die2, 2)} >
+                {this.state.held[1] === true ? "HELD" : "HOLD"}
+            </button>
           </div>
           <div className="dice">
-            <img src={"/images/dice" + this.state.die4 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die4, 4)}>{this.state.held[3] === true ? "HELD" : "HOLD"}</button>
+            <img src={"/images/dice" + this.state.die3 + ".png"} alt=""/>
+            <br/>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die3, 3)} >
+                {this.state.held[2] === true ? "HELD" : "HOLD"}
+            </button>
           </div>
           <div className="dice">
-            <img src={"/images/dice" + this.state.die5 + ".png"} alt=""/><br/>
-            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die5, 5)}>{this.state.held[4] === true ? "HELD" : "HOLD"}</button>
+            <img src={"/images/dice" + this.state.die4 + ".png"} alt=""/>
+            <br/>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die4, 4)}>
+                {this.state.held[3] === true ? "HELD" : "HOLD"}
+            </button>
+          </div>
+          <div className="dice">
+            <img src={"/images/dice" + this.state.die5 + ".png"} alt=""/>
+            <br/>
+            <button disabled={this.state.rolls === 0} className="hold btn btn-danger btn-lg" onClick={() => this.hold(this.state.die5, 5)}>
+                {this.state.held[4] === true ? "HELD" : "HOLD"}
+            </button>
           </div>
         </div>
         <div>
-          <button type="button" className="high_score_button btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">High<br/>Scores</button>
-          <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.newGame()}>New<br/>Game</button>
-          <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.showSubTotal()}>Sub<br/>Total</button>
-          <button disabled={this.state.rolls === 0 || this.state.score_entered === true || this.state.scoring_combo_selected === false} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>Enter Score</button>
-          <button disabled={this.state.rolls >= 3 || this.state.message.length > 0} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
+          <button type="button" className="high_score_button btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">
+            High<br/>Scores
+          </button>
+          <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.newGame()}>
+            New<br/>Game
+          </button>
+          <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.showSubTotal()}>
+            Sub<br/>Total
+          </button>
+          <button disabled={this.state.rolls === 0 || this.state.score_entered === true || this.state.scoring_combo_selected === false} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>
+            Enter Score
+          </button>
+          <button disabled={this.state.rolls >= 3 || this.state.message.length > 0} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>
+            {this.state.rolls === 3 ? "Out of Rolls" : "Roll"}
+          </button>
         </div>
 
 
