@@ -24,14 +24,17 @@ class Dice extends React.Component {
       user_score: 0,
       scoring_combo_selected: false,
       score_entered: false,
-      ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
-      three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
-      yahtzee: 0,
+      ones: true, twos: true, threes: true, fours: true, fives: true, sixes: true,
+      three_kind: true, four_kind: true, full: true, small: true, large: true, chance: false,
+      yahtzee_real: 0,
+      yahtzee_fake: 0,
       bonus: 0,
       top_level_score: 0,
+      message: "",
       game_over_message: "",
       top_level_bonus_message: "",
-      sub_total_toggle: false
+      sub_total_toggle: true,
+      high_score: 0
     };
   }
 
@@ -65,21 +68,24 @@ class Dice extends React.Component {
     let sorted_array = array.sort((a, b) => {
       return a - b;
     });
+    let dice_sum = array.reduce((a, b) => {
+      return a + b;
+    }, 0);
     let score = 0;
     if (sorted_array[0] === sorted_array[2]) {
-      score = sorted_array[0] * 3;
+      score = dice_sum;
     }
     else if (sorted_array[1] === sorted_array[3]) {
-      score = sorted_array[1] * 3;
+      score = dice_sum;
     }
     else if (sorted_array[2] === sorted_array[4]) {
-      score = sorted_array[2] * 3;
+      score = dice_sum;
     }
     else if (sorted_array[3] === sorted_array[5]) {
       score = sorted_array[3] * 3;
     }
     else if (sorted_array[4] === sorted_array[6]) {
-      score = sorted_array[4] * 3;
+      score = dice_sum;
     }
     this.setState({
       roll_value: score,
@@ -90,18 +96,21 @@ class Dice extends React.Component {
     let sorted_array = array.sort((a, b) => {
       return a - b;
     });
+    let dice_sum = array.reduce((a, b) => {
+      return a + b;
+    }, 0);
     let score = 0;
     if (sorted_array[0] === sorted_array[3]) {
-      score = sorted_array[0] * 4;
+      score = dice_sum;
     }
     else if (sorted_array[1] === sorted_array[4]) {
-      score = sorted_array[1] * 4;
+      score = dice_sum;
     }
     else if (sorted_array[2] === sorted_array[5]) {
-      score = sorted_array[2] * 4;
+      score = dice_sum;
     }
     else if (sorted_array[3] === sorted_array[6]) {
-      score = sorted_array[3] * 4;
+      score = dice_sum;
     }
     this.setState({
       roll_value: score,
@@ -176,16 +185,26 @@ class Dice extends React.Component {
     let sorted_array = array.sort((a, b) => {
       return a - b;
     });
-    if (sorted_array[0] === sorted_array[4] && this.state.yahtzee === 0) {
+    if (sorted_array[0] === sorted_array[4] && this.state.yahtzee_real === 0) {
       roll_value = 50;
+      this.setState({
+        roll_value: roll_value,
+        scoring_combo_selected: 'yahtzee_real'
+      });
     }
-    else if (sorted_array[0] === sorted_array[4] && this.state.yahtzee === 1) {
+    else if (sorted_array[0] === sorted_array[4] && this.state.yahtzee_real === 1) {
       roll_value = 150;
+      this.setState({
+        roll_value: roll_value,
+        scoring_combo_selected: 'yahtzee_real'
+      });
     }
-    this.setState({
-      roll_value: roll_value,
-      scoring_combo_selected: 'yahtzee'
-    });
+    else {
+      this.setState({
+         roll_value: 0,
+         scoring_combo_selected: 'yahtzee_fake'
+      });
+    }
   }
   chanceScoringChecker = (array) => {
     let chance_sum = array.reduce((a, b) => {
@@ -197,80 +216,106 @@ class Dice extends React.Component {
     })
   }
   enterScore = () => {
-    if (this.state.scoring_combo_selected !== 'yahtzee') {
-      let upper_score;
-      if (this.state.scoring_combo_selected === 'ones' || this.state.scoring_combo_selected === 'twos' || this.state.scoring_combo_selected === 'threes' || this.state.scoring_combo_selected === 'fours' || this.state.scoring_combo_selected === 'fives' || this.state.scoring_combo_selected === 'sixes') {
-        upper_score = this.state.roll_value;
-      } else {
-        upper_score = 0;
-      }
-      var newState = {
-        [this.state.scoring_combo_selected]: true,
-        user_score: this.state.user_score + this.state.roll_value,
-        roll_value: 0,
-        score_entered: true,
-        rolls: 0,
-        held: [false, false, false, false, false],
-        message: "",
-        top_level_score: this.state.top_level_score + upper_score
-      };
-      this.setState(newState);
-      this.gameOverChecker();
-    } else if (this.state.scoring_combo_selected === 'yahtzee') {
-      this.setState({
-        user_score: this.state.user_score + this.state.roll_value,
-        yahtzee: this.state.yahtzee + 1,
-        roll_value: 0,
-        score_entered: true,
-        rolls: 0,
-        held: [false, false, false, false, false],
-        message: ""
-      });
-      this.gameOverChecker();
+    let upper_score;
+    if (this.state.scoring_combo_selected !== 'yahtzee_real' && this.state.scoring_combo_selected !== 'yahtzee_fake') {
+          if (this.state.scoring_combo_selected === 'ones' || this.state.scoring_combo_selected === 'twos' || this.state.scoring_combo_selected === 'threes' || this.state.scoring_combo_selected === 'fours' || this.state.scoring_combo_selected === 'fives' || this.state.scoring_combo_selected === 'sixes') {
+            upper_score = this.state.roll_value;
+          } else {
+            upper_score = 0;
+          }
+          var newState = {
+            [this.state.scoring_combo_selected]: true,
+            user_score: this.state.user_score + this.state.roll_value,
+            roll_value: 0,
+            score_entered: true,
+            rolls: 0,
+            held: [false, false, false, false, false],
+            message: "",
+            top_level_score: this.state.top_level_score + upper_score
+          };
+          this.setState(newState);
+    } else if (this.state.scoring_combo_selected === 'yahtzee_real') {
+        this.setState({
+          user_score: this.state.user_score + this.state.roll_value,
+          yahtzee_real: this.state.yahtzee_real + 1,
+          yahtzee_fake: this.state.yahtzee_fake + 1,
+          roll_value: 0,
+          score_entered: true,
+          rolls: 0,
+          held: [false, false, false, false, false],
+          message: ""
+        });
+    } else if (this.state.scoring_combo_selected === 'yahtzee_fake') {
+        if (this.state.yahtzee_real > 0 || this.state.yahtzee_fake > 0) {
+            this.setState({
+                message: "NO MORE YAHTZEE SPACES. SCORE"
+            });
+        } else {
+            this.setState({
+                yahtzee_real: this.state.yahtzee_real + 1,
+                yahtzee_fake: this.state.yahtzee_fake + 1,
+                roll_value: 0,
+                score_entered: true,
+                rolls: 0,
+                held: [false, false, false, false, false],
+                message: ""
+            });
+        }
     }
   }
+
   gameOverChecker = () => { //returns true if all scoring combos and at least one yahtzee has been selected by the player
+    let high_score;
+    if (this.state.user_score > this.state.high_score) {
+        high_score = this.state.user_score
+    } else {
+        high_score = this.state.high_score
+    }
     let s = this.state;
     let array = [s.ones, s.twos, s.threes, s.fours, s.fives, s.sixes, s.three_kind, s.four_kind, s.full, s.small, s.large, s.chance];
     let game_over_indicator = array.every(bool => {return bool === true});
-    if (game_over_indicator && this.state.yahtzee > 0) {
+    if ((game_over_indicator && this.state.yahtzee_real > 0) || (game_over_indicator && this.state.yahtzee_fake > 0)) {
         this.bonusChecker();
         this.setState({
-            game_over_message: 'Game over!'
+            game_over_message: 'GAME OVER!',
+            high_score: high_score
         });
     }
   }
   roll = (held) => {
-      var holding_status_array = held.map((held_array_bool, index) => {
-        if (held_array_bool === false) {
-          return Math.ceil(Math.random() * 6);
-        }
-        else {
-          var scoring_array = [this.state.die1, this.state.die2, this.state.die3, this.state.die4, this.state.die5];;
-          return scoring_array[index];
-        }
-      });
-      this.setState({
-        die1: holding_status_array[0],
-        die2: holding_status_array[1],
-        die3: holding_status_array[2],
-        die4: holding_status_array[3],
-        die5: holding_status_array[4],
-        spinCount: this.state.spinCount + 1,
-        score_entered: false,
-        scoring_combo_selected: false,
-        roll_value: 0
-      })
-      if (this.state.spinCount <= 10) {
-        setTimeout(() => {
-          this.roll(held);
-        }, 150);
-      }
-      else {
-        this.setState({
-          spinCount: 0,
-          rolls: this.state.rolls + 1
-        });
+      this.gameOverChecker();
+      if (this.state.game_over_message.length === 0) {
+          var holding_status_array = held.map((held_array_bool, index) => {
+            if (held_array_bool === false) {
+              return Math.ceil(Math.random() * 6);
+            }
+            else {
+              var scoring_array = [this.state.die1, this.state.die2, this.state.die3, this.state.die4, this.state.die5];
+              return scoring_array[index];
+            }
+          });
+          this.setState({
+            die1: holding_status_array[0],
+            die2: holding_status_array[1],
+            die3: holding_status_array[2],
+            die4: holding_status_array[3],
+            die5: holding_status_array[4],
+            spinCount: this.state.spinCount + 1,
+            score_entered: false,
+            scoring_combo_selected: false,
+            roll_value: 0
+          })
+          if (this.state.spinCount <= 10) {
+            setTimeout(() => {
+              this.roll(held);
+            }, 150);
+          }
+          else {
+            this.setState({
+              spinCount: 0,
+              rolls: this.state.rolls + 1
+            });
+          }
       }
   }
   hold = (dieValue, index) => {
@@ -296,9 +341,11 @@ class Dice extends React.Component {
       score_entered: false,
       ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
       three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
-      yahtzee: [false, false, false, false, false, false, false, false, false, false, false, false, false],
+      yahtzee_real: 0,
+      yahtzee_fake: 0,
       top_level_bonus_message: "",
       game_over_message: "",
+      message: "",
       top_level_score: 0
     });
   }
@@ -308,7 +355,7 @@ class Dice extends React.Component {
         this.setState({
           bonus: 35,
           user_score: this.state.user_score + 35,
-          top_level_bonus_message: 'Top level bonus reached!'
+          top_level_bonus_message: 'BONUS WON!'
         });
       }
     }
@@ -347,14 +394,14 @@ class Dice extends React.Component {
             <div className="roll-value-actual">{this.state.roll_value === 0 ? "00" : this.state.roll_value < 10 ? "0" + this.state.roll_value : this.state.roll_value}</div>
           </div>
           <div className="bottom-scoreboard">
-            <div><button disabled={this.state.rolls === 0 || this.state.three_kind} type="submit" className="btn btn-primary" onClick={() => this.threeOfAKindScoringChecker(scoring_array)}>{this.state.three_kind === true ? "" : "3 KIND"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.four_kind === true} type="submit" className="btn btn-primary" onClick={() => this.fourOfAKindScoringChecker(scoring_array)}>{this.state.four_kind === true ? "" : "4 KIND"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.full === true} type="submit" className="btn btn-primary" onClick={() => this.fullHouseScoringChecker(scoring_array)}>{this.state.full === true ? "" : "FULL"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.small === true} type="submit" className="btn btn-primary" onClick={() => this.smallStraightScoringChecker(scoring_array)}>{this.state.small === true ? "" : "SMALL"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.large === true} type="submit" className="btn btn-primary" onClick={() => this.largeStraightScoringChecker(scoring_array)}>{this.state.large === true ? "" : "LARGE"}</button></div>
-            <div><button disabled={this.state.rolls === 0 || this.state.chance === true} type="submit" className="btn btn-primary" onClick={() => this.chanceScoringChecker(scoring_array)}>{this.state.chance === true ? "" : "CHANCE"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.three_kind} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.threeOfAKindScoringChecker(scoring_array)}>{this.state.three_kind === true ? "" : "3 KIND"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.four_kind === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fourOfAKindScoringChecker(scoring_array)}>{this.state.four_kind === true ? "" : "4 KIND"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.full === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.fullHouseScoringChecker(scoring_array)}>{this.state.full === true ? "" : "FULL"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.small === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.smallStraightScoringChecker(scoring_array)}>{this.state.small === true ? "" : "SMALL"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.large === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.largeStraightScoringChecker(scoring_array)}>{this.state.large === true ? "" : "LARGE"}</button></div>
+            <div><button disabled={this.state.rolls === 0 || this.state.chance === true} type="submit" className="bottom-scoreboard_button btn btn-primary" onClick={() => this.chanceScoringChecker(scoring_array)}>{this.state.chance === true ? "" : "CHANCE"}</button></div>
             <div><button disabled={this.state.rolls === 0} type="submit" className="yahtzee btn btn-primary" onClick={() => this.yahtzeeScoringChecker(scoring_array)} >YAHTZEE</button></div>
-            <div className="roll-number">{this.state.game_over_message.length > 0 ? "SELECT" : "SCORE"}</div>
+            <div className="roll-number">{this.state.game_over_message.length > 0 ? this.state.game_over_message + " " + this.state.top_level_bonus_message + " FINAL SCORE" : this.state.message.length > 0 ? this.state.message : "SCORE"}</div>
             <div className="roll-number-actual">{this.state.user_score === 0 ? "000" : this.state.user_score}</div>
             <div className="roll-number">ROLL</div>
             <div className="roll-number-actual">{this.state.rolls === 0 ? 1 : this.state.rolls <= 2 ? this.state.rolls + 1 : this.state.rolls === 4 ? 3 : ""}</div>
@@ -382,11 +429,29 @@ class Dice extends React.Component {
           </div>
         </div>
         <div>
+          <button type="button" className="high_score_button btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">High<br/>Scores</button>
           <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.newGame()}>New<br/>Game</button>
           <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.showSubTotal()}>Sub<br/>Total</button>
-          <button disabled={this.state.rolls === 0 || this.state.score_entered === true} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>Enter Score</button>
-          <button disabled={this.state.rolls === 3} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
-          <div className="messages">{this.state.game_over_message}{this.state.top_level_bonus_message}</div>
+          <button disabled={this.state.rolls === 0 || this.state.score_entered === true || this.state.scoring_combo_selected === false} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>Enter Score</button>
+          <button disabled={this.state.rolls >= 3 || this.state.message.length > 0} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
+        </div>
+
+
+        <div id="myModal" className="modal fade" role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal">&times;</button>
+                <h4 className="modal-title">HIGH SCORES</h4>
+              </div>
+              <div className="modal-body">
+                <p>Session High Score: {this.state.high_score}</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

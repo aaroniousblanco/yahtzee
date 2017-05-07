@@ -19,8 +19,8 @@ body {
 
 .game-play {
   background-color: #EAF27A;
-  padding: 10px 0 10px 10px;
-  margin: 0 150px 0 150px;
+  padding: 10px 0 10px 0px;
+  margin: 0 175px 0 175px;
   border-radius: 50px;
 }
 
@@ -51,7 +51,7 @@ body {
   display: inline-block;
 }
 
-.bottom-scoreboard button {
+.bottom-scoreboard_button {
   border: 2px solid black;
   border-radius: 20px;
   margin-left: 20px;
@@ -73,12 +73,14 @@ body {
   display: inline-block;
   padding: 20px 60px 30px 10px;
   margin-left: 20px;
+  margin-top: -26px;
   height: 40px;
   width: 80px;
   font-size: 8px;
   font-weight: bolder;
   background-color: silver;
   font-family: 'Press Start 2P', cursive;
+  color: black;
 }
 
 h4 {
@@ -120,7 +122,7 @@ h4 {
 
 .roll-value-actual {
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 12px;
   font-family: 'Press Start 2P', cursive;
   text-align: left;
   font-size: 20px;
@@ -133,7 +135,7 @@ h4 {
 }
 
 .roll-number {
-  margin-left: 270px;
+  margin-left: 90px;
   margin-top: 10px;
   font-family: 'Press Start 2P', cursive;
   font-size: 15px;
@@ -197,4 +199,28 @@ button.enter {
     display: inline-block;
     font-family: 'Press Start 2P', cursive;
     font-size: 20px;
+}
+
+.high_score_button {
+    display: inline-block;
+    border: none;
+    background-color: red;
+    border-radius: 30px;
+    padding: 6px 10px 6px 10px;
+    margin: 20px 0px 20px 20px;
+    font-family: 'Righteous', cursive;
+    font-size: 12px;
+}
+
+.modal-title {
+    margin-left: 10px;
+    margin-right: 5px;
+    display: inline-block;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+}
+
+.modal-body {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 15px;
 }
