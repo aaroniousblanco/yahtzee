@@ -384,7 +384,7 @@ class Dice extends React.Component {
           <div className="top-scoreboard">
             <div>
                 <input type="image" disabled={this.state.rolls === 0 || this.state.ones} src={this.props.diceImages[0]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(1, scoring_array)}/>
-                {this.state.ones ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>}
+                {this.state.ones ? <img className="arrow" src="/images/caret-arrow-up.svg" alt=""/> : <img className="arrow-hidden" src="/images/caret-arrow-up-yellow.svg" alt=""/>} 
             </div>
             <div>
                 <input type="image" disabled={this.state.rolls === 0 || this.state.twos} src={this.props.diceImages[1]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(2, scoring_array)}/>
