@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import classnames from 'classnames';
 
 const diceImages = [
   '/images/dice1.png',
@@ -28,7 +29,9 @@ class Dice extends React.Component {
       yahtzee: 0,
       bonus: 0,
       top_level_score: 0,
-      message: ""
+      game_over_message: "",
+      top_level_bonus_message: "",
+      sub_total_toggle: false
     };
   }
 
@@ -168,7 +171,7 @@ class Dice extends React.Component {
       scoring_combo_selected: 'full'
     });
   }
-  yahtzeeScoringChecker = (array) => {
+  yahtzeeScoringChecker = (array) => { //fix this so player can only enter a non-yahtzee score once
     let roll_value = 0;
     let sorted_array = array.sort((a, b) => {
       return a - b;
@@ -176,7 +179,7 @@ class Dice extends React.Component {
     if (sorted_array[0] === sorted_array[4] && this.state.yahtzee === 0) {
       roll_value = 50;
     }
-    else {
+    else if (sorted_array[0] === sorted_array[4] && this.state.yahtzee === 1) {
       roll_value = 150;
     }
     this.setState({
@@ -212,6 +215,7 @@ class Dice extends React.Component {
         top_level_score: this.state.top_level_score + upper_score
       };
       this.setState(newState);
+      this.gameOverChecker();
     } else if (this.state.scoring_combo_selected === 'yahtzee') {
       this.setState({
         user_score: this.state.user_score + this.state.roll_value,
@@ -222,10 +226,21 @@ class Dice extends React.Component {
         held: [false, false, false, false, false],
         message: ""
       });
+      this.gameOverChecker();
+    }
+  }
+  gameOverChecker = () => { //returns true if all scoring combos and at least one yahtzee has been selected by the player
+    let s = this.state;
+    let array = [s.ones, s.twos, s.threes, s.fours, s.fives, s.sixes, s.three_kind, s.four_kind, s.full, s.small, s.large, s.chance];
+    let game_over_indicator = array.every(bool => {return bool === true});
+    if (game_over_indicator && this.state.yahtzee > 0) {
+        this.bonusChecker();
+        this.setState({
+            game_over_message: 'Game over!'
+        });
     }
   }
   roll = (held) => {
-    console.log(gameOverChecker()); //testing this function
       var holding_status_array = held.map((held_array_bool, index) => {
         if (held_array_bool === false) {
           return Math.ceil(Math.random() * 6);
@@ -282,24 +297,32 @@ class Dice extends React.Component {
       ones: false, twos: false, threes: false, fours: false, fives: false, sixes: false,
       three_kind: false, four_kind: false, full: false, small: false, large: false, chance: false,
       yahtzee: [false, false, false, false, false, false, false, false, false, false, false, false, false],
-      message: ""
+      top_level_bonus_message: "",
+      game_over_message: "",
+      top_level_score: 0
     });
   }
-  bonusChecker = () => { //call this at the end of the game
+  bonusChecker = () => { //this is called inside gameOverChecker
     if (this.state.ones && this.state.twos && this.state.threes && this.state.fours && this.state.fives && this.state.sixes) {
       if (this.state.top_level_score >= 63) {
         this.setState({
           bonus: 35,
-          user_score: this.state.user_score + 35
+          user_score: this.state.user_score + 35,
+          top_level_bonus_message: 'Top level bonus reached!'
         });
       }
     }
   }
-  gameOverChecker = () => { //test this
-    let s = this.state;
-    let array = [s.ones, s.twos, s.threes, s.fours, s.fives, s.sixes, s.three_kind, s.four_kind, s.full, s.small, s.large, s.chance, s.yahtzee[0]];
-    let poop = array.every(bool => {bool});
-    return poop;
+  showSubTotal = () => {
+      if (this.state.sub_total_toggle) {
+          this.setState({
+             sub_total_toggle: false
+          });
+      } else if (this.state.sub_total_toggle === false) {
+          this.setState({
+             sub_total_toggle: true
+          });
+      }
   }
 
   render() {
@@ -318,6 +341,8 @@ class Dice extends React.Component {
             <input type="image" disabled={this.state.rolls === 0 || this.state.fours} src={this.props.diceImages[3]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(4, scoring_array)}/>
             <input type="image" disabled={this.state.rolls === 0 || this.state.fives} src={this.props.diceImages[4]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(5, scoring_array)}/>
             <input type="image" disabled={this.state.rolls === 0 || this.state.sixes} src={this.props.diceImages[5]} className="btTxt submit" onClick={() => this.upperSectionScoringChecker(6, scoring_array)}/>
+            <div className={classnames("sub_total_toggle_false", {'sub_total_toggle' : this.state.sub_total_toggle})}>SUB<br/>TOTAL</div>
+            <div className={classnames("sub_total_toggle_false_value", {'sub_total_toggle' : this.state.sub_total_toggle, 'roll-value-actual' : this.state.sub_total_toggle,})}>{this.state.top_level_score}</div>
             <div className="roll-value">ROLL<br/>VALUE</div>
             <div className="roll-value-actual">{this.state.roll_value === 0 ? "00" : this.state.roll_value < 10 ? "0" + this.state.roll_value : this.state.roll_value}</div>
           </div>
@@ -329,7 +354,7 @@ class Dice extends React.Component {
             <div><button disabled={this.state.rolls === 0 || this.state.large === true} type="submit" className="btn btn-primary" onClick={() => this.largeStraightScoringChecker(scoring_array)}>{this.state.large === true ? "" : "LARGE"}</button></div>
             <div><button disabled={this.state.rolls === 0 || this.state.chance === true} type="submit" className="btn btn-primary" onClick={() => this.chanceScoringChecker(scoring_array)}>{this.state.chance === true ? "" : "CHANCE"}</button></div>
             <div><button disabled={this.state.rolls === 0} type="submit" className="yahtzee btn btn-primary" onClick={() => this.yahtzeeScoringChecker(scoring_array)} >YAHTZEE</button></div>
-            <div className="roll-number">{this.state.message.length > 0 ? "SELECT" : "SCORE"}</div>
+            <div className="roll-number">{this.state.game_over_message.length > 0 ? "SELECT" : "SCORE"}</div>
             <div className="roll-number-actual">{this.state.user_score === 0 ? "000" : this.state.user_score}</div>
             <div className="roll-number">ROLL</div>
             <div className="roll-number-actual">{this.state.rolls === 0 ? 1 : this.state.rolls <= 2 ? this.state.rolls + 1 : this.state.rolls === 4 ? 3 : ""}</div>
@@ -358,8 +383,10 @@ class Dice extends React.Component {
         </div>
         <div>
           <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.newGame()}>New<br/>Game</button>
+          <button type="submit" className="new-game btn btn-primary btn-lg" onClick={() => this.showSubTotal()}>Sub<br/>Total</button>
           <button disabled={this.state.rolls === 0 || this.state.score_entered === true} type="submit" className="enter btn btn-primary btn-lg" onClick={() => this.enterScore()}>Enter Score</button>
           <button disabled={this.state.rolls === 3} className="roll btn btn-primary btn-lg" onClick={() => this.roll(this.state.held)}>{this.state.rolls === 3 ? "Out of Rolls" : "Roll"}</button>
+          <div className="messages">{this.state.game_over_message}{this.state.top_level_bonus_message}</div>
         </div>
       </div>
     );
