@@ -36,10 +36,12 @@ body {
   border-radius: 10px;
   background-color: silver;
   margin-right: 25px;
+  outline: none !important;
 }
 
 .top-scoreboard input:hover {
   background-color: gray;
+  outline: none !important;
 }
 
 .bottom-scoreboard {
@@ -63,9 +65,11 @@ body {
   background-color: silver;
   color: black;
   font-family: 'Press Start 2P', cursive;
+  outline: none !important;
 }
 .bottom-scoreboard button:hover {
   background-color: gray;
+  outline: none !important;
 }
 
 .yahtzee {
@@ -112,6 +116,7 @@ h4 {
   margin-left: 25%;
   font-size: 15px;
   font-family: 'Righteous', cursive;
+  outline: none !important;
 }
 
 .roll-value {
@@ -179,10 +184,12 @@ button.enter {
   padding: 10px 10px 10px 10px;
   margin: 20px 10px 20px 10px;
   font-family: 'Righteous', cursive;
+  outline: none !important;
 }
 
  button.enter:hover {
   background-color: darkred;
+  outline: none !important;
 }
 
 .roll {
@@ -192,6 +199,8 @@ button.enter {
   padding: 10px 40px 10px 40px;
   margin: 20px 60px 20px 0px;
   font-family: 'Righteous', cursive;
+  outline: none !important;
+
 }
 
 .new-game {
@@ -202,10 +211,12 @@ button.enter {
   margin: 20px 0px 20px 20px;
   font-family: 'Righteous', cursive;
   font-size: 12px;
+  outline: none !important;
 }
 
 .roll:hover, .new-game:hover {
   background-color: darkred;
+  outline: none !important;
 }
 
 .sub_total_toggle {
@@ -237,6 +248,7 @@ button.enter {
     margin: 20px 0px 20px 20px;
     font-family: 'Righteous', cursive;
     font-size: 12px;
+    outline: none !important;
 }
 
 .modal-title {
