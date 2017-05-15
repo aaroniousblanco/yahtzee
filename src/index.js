@@ -378,6 +378,9 @@ class Dice extends React.Component {
         <h4>ELECTRONIC<br/>HAND-HELD</h4>
           Yahtzee!
         </div>
+        <div className="asterisk">
+          <h5>*For the <a href="https://www.youtube.com/watch?v=U10wuTQSLJk" target="_blank">most authentic experience</a> be sure to play on a 1200-1300 pixel-wide screen.</h5>
+        </div>
         <div className="game-play">
           <div className="top-scoreboard">
             <div>
